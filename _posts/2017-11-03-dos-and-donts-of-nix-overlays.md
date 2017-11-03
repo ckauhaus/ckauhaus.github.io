@@ -4,9 +4,9 @@ title:  "The DOs and DON'Ts of nixpkgs overlays"
 date:   2017-11-03 16:17:00 +0100
 ---
 One presentation at [NixCon 2017][nixcon2017] that especially drew my attention
-was [Nicolas Pierron][nbpname]'s talk about **Nixpkgs Overlays**
-([video][video], [slides][slides]). I'd like to give a summary here for future
-reference. All the credits go to Nicolas, of course.
+was [Nicolas Pierron][nbpname]'s talk about **Nixpkgs overlays**
+([video][video], [slides][slides]). I'd like to give a quick summary here for
+future reference. All the credits go to Nicolas, of course.
 
 ## What are overlays?
 
@@ -27,7 +27,7 @@ self: super: {
 
 Arguments:
 
-* **self** is the end result of fix point calculation. Use it to access packages
+* **self** is the result of the fix point calculation. Use it to access packages
     which could be modified somewhere else in the overlay stack.
 * **super** one overlay down in the stack (and base nixpkgs for the first
     overlay). Use it to access the packages you want to customize and for
@@ -74,7 +74,7 @@ self: super:
 
 From [Mozilla](https://github.com/mozilla/nixpkgs-mozilla/).
 
-## Bad example
+## Bad examples
 
 ### Recursive attrset
 
@@ -92,8 +92,7 @@ self: super: rec {
 Two issues:
 
 * Use `super` to access library functions.
-* Overlays should not be recursive. Use `self` (or let if you don't want to give
-    access to `fakeClosure`).
+* Overlays should not be recursive. Use `self`.
 
 ### Surplus arguments
 
@@ -110,7 +109,7 @@ self: super:
 
 The issue:
 
-* Overlays should just depend on `self` and `super` in order to be composable.
+* Overlays should depend just on `self` and `super` in order to be composable.
 
 ### Awkward nixpkgs import
 
@@ -132,11 +131,11 @@ in
 Two issues:
 
 * Unnecessary double-import of nixpkgs. This might break cross-system builds.
-* requirements.nix should use `self` not `pkgs`.
+* *requirements.nix* should use `self` not `pkgs`.
 
-Improved version:
+#### Improved version
 
-shell.nix
+*shell.nix*:
 {% highlight nix %}
 { pkgsPath ? <nixpkgs> }:
 import pkgsPath {
@@ -144,7 +143,7 @@ import pkgsPath {
 }
 {% endhighlight %}
 
-default.nix
+*default.nix*:
 {% highlight nix %}
 self: super:
 {
@@ -168,18 +167,18 @@ in {
 
 The issue:
 
-* Dependencies should rather be taken from `self` not `super`. This way they can
-  be overridden from other overlays.
+* Other packages should be taken from `self` not `super`. This way they
+  can be overridden by other overlays.
 
 {% highlight nix %}
 {% endhighlight %}
 
 ## Summary
 
-This is a condensed overlay guide. For a more in-depth discussion, please go
-watch Nicolas' (talk)(video). Many thanks to him for putting this together!
-
-There is also good documentaion in the [Nixpkgs manual][manual-overlays].
+I hope this condensed guide helps you to write better overlays. For a more
+in-depth discussion, please go watch Nicolas' [talk][video] and read the
+[Nixpkgs manual][manual-overlays].  Many thanks to Nicolas for putting this
+together!
 
 
 [nixcon2017]: http://nixcon2017.org/
