@@ -1,1 +1,11 @@
 theme: jekyll-theme-minimal
+title: Christian Kauhaus
+email: kc@flyingcircus.io
+description: > # this means to ignore newlines until "baseurl:"
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://ckauhaus.github.io" # the base hostname & protocol for your site
+twitter_username: ckauhaus
+github_username:  ckauhaus
+
+# Build settings
+markdown: kramdown
