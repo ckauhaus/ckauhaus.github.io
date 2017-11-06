@@ -30,8 +30,8 @@ Arguments:
 * **self** is the result of the fix point calculation. Use it to access packages
     which could be modified somewhere else in the overlay stack.
 * **super** one overlay down in the stack (and base nixpkgs for the first
-    overlay). Use it to access the packages you want to customize and for
-    library functions.
+    overlay). Use it to access the package recipes you want to customize, and
+    for library functions.
 
 ## Good examples
 
@@ -170,7 +170,41 @@ The issue:
 * Other packages should be taken from `self` not `super`. This way they
   can be overridden by other overlays.
 
+### Overridden attrset
+
 {% highlight nix %}
+self: super:
+{
+  lib = {
+    firefoxVersion = … ;
+  };
+  latest = {
+    firefox-nightly-bin = … ;
+    firefox-beta-bin = … ;
+    firefox-bin = … ;
+    firefox-esr-bin = … ;
+  };
+}
+{% endhighlight %}
+
+The issue:
+
+* Other attributes present in `lib` and `latest` from down the overlay stack are
+  erased.
+
+#### Improved version
+
+Always extend attrsets in overlays:
+{% highlight nix %}
+self: super:
+{
+  lib = (super.lib or {}) // {
+    firefoxVersion = … ;
+  };
+  latest = (super.latest or {}) // {
+    …
+  };
+}
 {% endhighlight %}
 
 ## Summary
