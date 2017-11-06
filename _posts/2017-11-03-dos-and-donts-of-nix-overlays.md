@@ -11,27 +11,26 @@ future reference. All the credits go to Nicolas, of course.
 ## What are overlays?
 
 Overlays are the new standard mechanism to customize nixpkgs. They replace
-constructs like `packageOverride`, `overridePackages`, and `import <nixpkgs> {}
-// { … }`.
+constructs like `packageOverride` and `overridePackages`.
 
 ## How do I use overlays?
 
-Put your overlays into `~/.config/nixpkgs/overlays/`. All overlays share a basic
+Put your overlays into *~/.config/nixpkgs/overlays/*. All overlays share a basic
 structure:
 
 {% highlight nix %}
 self: super: {
-  # …
+  …
 }
 {% endhighlight %}
 
 Arguments:
 
 * **self** is the result of the fix point calculation. Use it to access packages
-    which could be modified somewhere else in the overlay stack.
+  which could be modified somewhere else in the overlay stack.
 * **super** one overlay down in the stack (and base nixpkgs for the first
-    overlay). Use it to access the package recipes you want to customize, and
-    for library functions.
+  overlay). Use it to access the package recipes you want to customize, and
+  for library functions.
 
 ## Good examples
 
@@ -209,7 +208,7 @@ self: super:
 
 ## Summary
 
-I hope this condensed guide helps you to write better overlays. For a more
+I hope this condensed guide helps you to write better overlays. For
 in-depth discussion, please go watch Nicolas' [talk][video] and read the
 [Nixpkgs manual][manual-overlays].  Many thanks to Nicolas for putting this
 together!
@@ -220,3 +219,9 @@ together!
 [slides]: http://nbp.github.io/slides/NixCon/2017.NixpkgsOverlays/
 [video]: https://youtu.be/6bLF7zqB7EM?t=39m50s
 [manual-overlays]: https://nixos.org/nixpkgs/manual/#chap-overlays
+
+<!--
+cover image:
+https://www.flickr.com/photos/thedailyenglishshow/3909355644 (preferred)
+https://www.flickr.com/photos/indi/4259120807/
+-->
